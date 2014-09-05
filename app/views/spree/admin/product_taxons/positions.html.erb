@@ -1,4 +1,7 @@
 <h1><%= "#{t('positions_for_products_in_taxons')} #{@taxon.name}" %></h1>
+<br />
+
+<%= link_to Spree.t(:back), admin_product_sort_taxon_path %><br /><br />
 
 <%= render :partial=> 'product_list', :locals => {:taxon => @taxon} %>
 
