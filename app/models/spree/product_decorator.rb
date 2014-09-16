@@ -1,11 +1,10 @@
 Spree::Product.class_eval do
   has_many :product_taxons
-  has_many :taxons, :through=>:product_taxons
+  has_many :taxons, through: :product_taxons
 
-  #default_scope :include=>:product_taxons, :order=>"product_taxons.position"
-  scope :ordered, {:include=>:product_taxons, :order=>"spree_product_taxons.position"}
+  scope :ordered, ->{ includes(:product_taxons).order("spree_product_taxons.position") }
 
-  scope :available, lambda { |*args| 
+  scope :available, lambda { |*args|
     where(["spree_products.available_on <= ?", args.first || Time.zone.now]).
       includes(:product_taxons).
       order('spree_product_taxons.taxon_id, spree_product_taxons.position') #group positions by taxon so that home page (0) works
@@ -15,7 +14,7 @@ Spree::Product.class_eval do
 
   def create_product_taxon
     # new product added, create initial product_taxon assignment so that products on the main page can also be sorted.
-    Spree::ProductTaxon.create(:product_id=>self.id, :taxon_id=>0)
+    Spree::ProductTaxon.create(product_id: self.id, taxon_id: 0)
   end
 
   def in_taxon?(taxon)
