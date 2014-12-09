@@ -4,9 +4,9 @@ module Spree
 		  def taxons
         # List of taxons, beginnning with a virtual taxons for Home, and then all taxons with pts
         @taxons = []
-        @taxons |= Spree::Taxon.joins(:product_taxons).order(:name)
+        @taxons |= Spree::Taxon.joins(:product_taxons).order('spree_taxons.name')
       end
-      
+
       def positions
         @taxon = Spree::Taxon.find(params[:id])
       end
