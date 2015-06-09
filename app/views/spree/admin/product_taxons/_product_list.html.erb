@@ -5,9 +5,9 @@
   else
     products = Spree::Product.available
   end
-  
-  #collect the pts for this taxon from each product 
-  product_taxons = products.collect {|p| p.product_taxons.where(:taxon_id => taxon.id || 0).first }
+
+  #collect the pts for this taxon from each product
+  product_taxons = products.collect {|p| p.product_taxons.where(:taxon_id => taxon.id || 0).first }.uniq
 %>
 
 <% product_taxons.compact.each do |pt| %>
